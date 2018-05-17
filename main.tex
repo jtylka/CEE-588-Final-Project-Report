@@ -21,7 +21,7 @@
 % User-defined commands
 \newcommand{\figref}[1]{Fig.~\ref{#1}}
 \newcommand{\eqnref}[1]{Eq.~(\ref{#1})}
-\newcommand{\eqnreftwo}[2]{Eqs.~(\ref{#1})~and~(\ref{#2})}
+\newcommand{\eqnreftwo}[2]{Eqs.~(\ref{#1}) and (\ref{#2})}
 \newcommand{\secref}[1]{Sec.~\ref{#1}}
 
 \renewcommand{\baselinestretch}{1.5}
@@ -33,14 +33,14 @@
 {\Large \textbf{Forecasting Wind Velocity Using an Autoregressive Method}}\\
 \vspace{\baselineskip}
 Final Project Report\\
-Joseph G. Tylka\\
+Joseph G.~Tylka\\
 \href{mailto:josephgt@princeton.edu}{josephgt@princeton.edu}\\
 \vspace{\baselineskip}
 CEE 588: Boundary Layer Meteorology\\
 Professor: Elie Bou-Zeid\\
 Semester: Spring 2018\\
 \vspace{\baselineskip}
-May 16\textsuperscript{th}, 2018\\
+May 17\textsuperscript{th}, 2018\\
 \end{centering}
 
 %% Abstract
@@ -50,50 +50,53 @@ May 16\textsuperscript{th}, 2018\\
 % The rest should be a statement of all the major findings
 \begin{abstract}
 An autoregressive method of forecasting wind velocity is implemented and characterized.
-Autoregression is a well-established empirical method for near-term (typically at most two days) forecasting of wind velocity, but the parameters of the prediction model (i.e., the autoregression coefficients) should be determined based on a characterization of past wind data.
-Using a time-series dataset of wind velocities, relevant timescales are determined over which past wind velocities are useful predictors of future data.
-Subsequently, an autoregressive model is implemented and its performance is evaluated, in terms of a prediction error, and compared to that of two simpler predictive models: a persistence model and a random sample.
-Additionally, the performance of the autoregressive model is characterized by examining the variation of prediction error with season and under daytime and nighttime conditions.
+Autoregression is a well-established method for near-term (typically at most two days) data-driven forecasting of wind velocity, but the performance of the model depends on the timescale characteristics of the wind data used to determine the coefficients of the model.
+Using the autocorrelation of a time-series dataset of wind velocities, relevant timescales are determined over which past wind velocities are useful predictors of future data.
+Subsequently, an autoregression model is implemented and its performance is compared, in terms of a prediction error, to that of two simpler predictive models: a persistence model and a random sample.
+Additionally, the performance of the autoregression model is characterized by examining the variation of prediction error with season and under daytime and nighttime conditions.
+Results of the timescale analysis suggest that the wind system will tend to ``forget'' previous wind conditions after approximately 5.5 days.
+Indeed, results show that, while the autoregression model performs consistently superior to the alternative models, it reaches a plateau in prediction error over approximately that timescale.
+The autoregression model is also shown to yield more accurate predictions in the Summer than in the Winter, as well as during the day than at night.
 \end{abstract}
 
 \newpage
 
+% Research questions:
+% Q1: what are the relevant timescales? i.e., how far into the future must one travel to "forget" about the previous wind conditions?
+% Q2: how does the autoregression method compare to persistence and random methods?
+% Q3: how does the performance of the autoregression method vary with season and time-of-day?
+
 %%%% INTRODUCTION %%%%
 % Motivation for work (from a very general perspective)
-
 \section{Introduction}
-In order to enable integration of wind energy into the power grid, reliable methods of forecasting wind power output are required.
-
+In order to facilitate the integration of wind energy into the power grid, reliable methods of forecasting wind power output are required.
 % Review of previous work focusing on the remaining problems (questions or deficiencies) the present paper claims to contribute to solving
-\subsection{Background and Previous Work}
-\citet{Brown1984} first proposed autoregressive model to forecast wind speed.
-However, it is unclear over what timescales the autoregression paradigm can be useful.
-
+%\subsection{Background and Previous Work}
+\citet{Brown1984} first proposed using autoregressive models to forecast wind speed.
+However, it is unclear over what timescales an autoregression model can be expected to perform well.
 Additionally, it is unclear what benefits autoregression yields over more naive approaches.
 
 % A statement of the paper's main question(s) and goal(s), followed by a succinct description of the general method and approach to be described in the paper
-\subsection{Objectives and Approach}
-The primary objective of this work is to determine the relevant timescales over which an autoregression model can be expected to perform well.
-To that end, pairwise statistical analyses are conducted using a dataset of historical wind data.
+%\subsection{Objectives and Approach}
+The primary objective of this work is to implement and characterize the performance of an autoregression model for wind velocity forecasting.
+To that end, we first determine the relevant timescales over which an autoregression model can be expected to perform well by conducting an autocorrelation analysis using a dataset of historical wind data.
 
-Additionally, it is the objective of this work to implement, and characterize the performance of, an autoregressive model.
-The model parameters are computed using a dataset of historical wind data, and the model is evaluated using the same dataset but for a distinct (i.e., non-overlapping) time period.
+Subsequently, the model parameters are computed using these historical wind data, and the model is evaluated using the same dataset but for a distinct (i.e., non-overlapping) time period.
 This evaluation consists of randomly selecting segments of measured wind data as an input to the model, and comparing the predictions of the model to the real measurements following the input segment.
 The performance of the autoregression model is compared to that of two simpler predictive models: a persistence model and a random sample.
 Additionally, the performance of the autoregressive model is characterized by examining the variation of prediction error with season and under daytime and nighttime conditions.
 
-% Q1: what are the relevant timescales? i.e., how far into the future must one travel to "forget" about the current wind conditions?
-% Q2: how does the autoregression method compare to persistence and random methods?
-% Q3: how does the performance of the autoregression method vary with season and time-of-day?
-
 % A brief section by section description of the structure of the paper
-\subsection{Paper Overview}
-In~\secref{sec:Theory}, we review the necessary mathematical theory used in this work.
-Next, in~\secref{sec:Methodology}, we describe the analysis done to determine relevant timescales and to characterize the performance of the forecasting method.
-In~\secref{sec:Results}, we present and discuss the results of these analyses, and finally, in~\secref{sec:Conclusions}, we draw conclusions from these results.
+%\subsection{Paper Overview}
+The rest of this report is organized as follows.
+In \secref{sec:Theory}, we review the mathematical theory used in this work.
+Next, in \secref{sec:Methodology}, we describe the analyses done to determine relevant timescales and to characterize the performance of the forecasting method.
+In \secref{sec:Results}, we present and discuss the results of these analyses, and finally,
+in \secref{sec:Conclusions}, we summarize and draw conclusions from these results.
 
+%%%% THEORY %%%%
 \section{Review of Mathematical Theory}\label{sec:Theory}
-In this section we first formulate the empirical forecasting problem.
+In this section we first formulate the data-driven forecasting problem.
 We then review pairwise (i.e., two-point) statistics functions: the cross- and autocorrelation and cross- and autocovariance functions.
 Finally, we review three forecasting methods which we will use in our analysis.
 
@@ -101,7 +104,7 @@ Finally, we review three forecasting methods which we will use in our analysis.
 Consider the stream-wise and cross-stream wind velocities, $u(t)$ and $v(t)$, sampled at times $t_n$ for all integers $n$ with a sampling rate $F_s$, such that $t_n = n/F_s$.
 For simplicity, we consider $t_n < 0$ to be the ``past'' and $t_n \geq 0$ to be the ``future.''
 We write the wind velocity as a complex variable, $z(t) = u(t) + i v(t)$, where $i$ is the imaginary unit, and denote the sampled wind data by $u_n = u(t_n)$, $v_n = v(t_n)$, and $z_n = z(t_n)$.
-The goal of empirical wind velocity forecasting is to use past wind data, say $N_\text{in}$ previous samples, to predict $N_\text{out}$ future samples.
+The goal of data-driven wind velocity forecasting is to use past wind data, say $N_\text{in}$ previous samples, to predict $N_\text{out}$ future samples.
 That is, 
 \begin{equation}
 \mathbf{z}_\text{out} = f(\mathbf{z}_\text{in})
@@ -219,7 +222,7 @@ We then realign the training dataset and all wind data used hereafter such that
 \hat{z}_n = z_n e^{-i\hat{\theta}}.
 \end{equation}
 
-\subsection{Timescale Analysis}
+\subsection{Timescale Analysis}\label{sec:Methodology:Timescale}
 In order to determine the timescales over which an autoregressive method can be expected to perform well, we compute the autocorrelation of both $U_m$ and $V_m$, taken from the historical wind data, $\zeta_m = U_m + i V_m$.
 From these autocorrelation sequences, we define a timescale, $T_X$ (where $X$ can be replaced by either $U$ or $V$), given by
 \begin{equation}\label{eq:Timescale}
@@ -251,7 +254,7 @@ We perform this calculation for $Q$ randomly selected test segments, and compute
 \end{equation}
 where $\epsilon_n^{(q)}$ is the prediction error for the $q^\text{th}$ test segment.
 
-\subsubsection{Seasonal and Diurnal Performance}
+\subsubsection{Seasonal and Diurnal Performance}\label{sec:Methodology:SeasonalAndDiurnalDependence}
 To investigate the seasonal dependence of the prediction errors, we repeat a very similar analysis to that described above in \secref{sec:Methodology:Comparison}, but restrict the randomly selected test segments to be from a given season.
 In particular, we ensure that the entire test segment is contained within the same season.
 
@@ -260,7 +263,7 @@ Similarly, to investigate the diurnal variation, we restrict the randomly select
 %%%% RESULTS %%%%
 \section{Results and Discussion}\label{sec:Results}
 
-\subsection{Timescale Analysis}
+\subsection{Timescale Analysis}\label{sec:Results:Timescale}
 The autocorrelation sequences $R_{UU}(m)$ and $R_{VV}(m)$ are plotted in \figref{fig:Autocorrelations}.
 From this plot, we see that $R_{UU}$ reaches a steady-state value of approximately $\tilde{R}_{UU} = 0.1$, while the steady-state value of $R_{VV}$ is essentially $\tilde{R}_{VV} = 0$.
 Choosing $M_\text{max}$ as the first (i.e., smallest positive) value of $m$ at which $R_{XX}(m) < \tilde{R}_{XX}$, we compute, using \eqnref{eq:Timescale_mod}, the timescales $T_U$ and $T_V$,
@@ -279,11 +282,12 @@ Similarly, we can expect the errors generated by the persistence model to reach 
 
 \subsection{Performance Characterization}
 Here, we construct an autoregressive model, as described in \secref{sec:Methods:Autoregression}, with an order $P$ corresponding to 2 days, i.e., $P = 2 \times 24 F_s$, where $F_s$ is given in samples per hour.
-In each analysis below, we have computed, using \eqnref{eq:RMSError}, the rms errors averaged over 100 test segments.
+In each analysis below, we have computed, using \eqnref{eq:RMSError}, the rms error averaged over $Q = 100$ test segments.
 
-\subsubsection{Comparison of Forecasting Methods}
+\subsubsection{Comparison of Forecasting Methods}\label{sec:Results:Comparison}
 The rms prediction errors incurred by each forecasting method are plotted in \figref{fig:ComparisonRMS}.
-Here, we take $N_\text{in}$ and $N_\text{out}$ to correspond to 10 and 30 days, respectively. %%TODO%% redo with N_in = 2 days
+Here, we take $N_\text{in}$ and $N_\text{out}$ to correspond to 10 and 30 days, respectively.
+%%TODO%% redo with N_in = 2 days
 From this plot, we see that the autoregression method performs consistently superior to both the persistence and random sample methods.
 
 \begin{figure}[htb]
@@ -327,19 +331,21 @@ Consequently, we infer that nighttime wind conditions are more useful predictors
 \label{fig:DiurnalRMS}
 \end{figure}
 
+%%%% CONCLUSIONS %%%%
 \section{Summary and Conclusions}\label{sec:Conclusions}
+In this work we implemented and characterized the performance of an autoregression model for wind velocity forecasting.
+We first determined the relevant timescales over which an autoregression model can be expected to perform well by conducting an autocorrelation analysis using a dataset of historical wind data.
+Subsequently, we compared, in terms of an average prediction error, the performance of the autoregression model to that of two simpler predictive models: a persistence model and a random sample.
+Additionally, we examined the variation of prediction error with season and under daytime and nighttime conditions.
 
-
-
-Autoregression performs consistently better than the persistence and random sample models, even at large times.
-However, the errors incurred reach a plateau beyond approximately $5.5$ days.
-
-Daytime predictions of wind velocity tend to be more accurate than nighttime predictions, which suggests that nighttime wind conditions are more useful predictors of the following day's wind conditions than the opposite.
+Results of the timescale analysis suggest that the wind system will tend to ``forget'' previous wind conditions after approximately 5.5 days (see \secref{sec:Results:Timescale}).
+Indeed, results show that, while the autoregression model performs consistently superior to the simpler alternative models, it reaches a plateau in prediction error over approximately that timescale (see \figref{fig:ComparisonRMS}).
+The autoregression model was also found to yield more accurate predictions in the Summer than in the Winter (see \figref{fig:SeasonalRMS}), which suggests that wind conditions in the Summer may be more consistent and ``predictable'' as a result.
+Daytime predictions of wind velocity were also found to be more accurate than nighttime predictions (see \figref{fig:DiurnalRMS}), which suggests that nighttime wind conditions are more useful predictors of the following day's wind conditions than the opposite.
 
 \subsection{Future Work}
 Future investigations should include an implementation of more specific or localized autoregression models.
 For example, different autoregression coefficients might be computed for each season and/or for each time of day.
-
 
 \bibliographystyle{unsrtnat}
 \bibliography{refs}

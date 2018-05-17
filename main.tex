@@ -4,13 +4,26 @@
 \usepackage[letterpaper, margin=1in, includeheadfoot]{geometry}
 \usepackage{hyperref}
 \usepackage{tabularx}
+\usepackage{lastpage}
 
 % Header and Footer
 \usepackage{fancyhdr}
-\pagestyle{fancy}
 \renewcommand{\headrulewidth}{1pt}
-\lhead{}\chead{\textsc{CEE 588: Boundary Layer Meteorology $\cdot$ Princeton University}}\rhead{}
+\fancypagestyle{firstpages}{ % For first few pages
+%\lhead{}\chead{\textsc{Princeton University ~~$\cdot$~~ CEE 588: Boundary Layer Meteorology ~~$\cdot$~~ J.~G.~Tylka}}\rhead{}
+\lhead{\textsc{CEE 588}}\chead{\textsc{Princeton University}}\rhead{\textsc{J.~G.~Tylka}}
+%\fancyhead[CO]{\textsc{CEE 588: Boundary Layer Meteorology $\cdot$ Princeton University}}
+%\fancyhead[LE]{\textsc{Wind Velocity Forecasting}}
+%\fancyhead[RE]{\textsc{J.~G.~Tylka}}
+%\fancyhead[LO,CE,RO]{}
 \lfoot{}\cfoot{\thepage}\rfoot{}
+\pagenumbering{roman}
+}
+\fancypagestyle{pages}{ % For all other pages
+\lhead{\textsc{CEE 588}}\chead{\textsc{Princeton University}}\rhead{\textsc{J.~G.~Tylka}}
+\lfoot{}\cfoot{\thepage ~of \pageref{LastPage}}\rfoot{}
+\pagenumbering{arabic}
+}
 
 % Additional packages
 \usepackage{graphicx}
@@ -28,48 +41,51 @@
 
 \begin{document}
 
-% Title and Author block
-%%TODO%% convert to title page
-\begin{centering}
-{\Large \textbf{Forecasting Wind Velocity Using an Autoregressive Method}}\\
-\vspace{\baselineskip}
-Final Project Report\\
-Joseph G.~Tylka\\
-\href{mailto:josephgt@princeton.edu}{josephgt@princeton.edu}\\
-\vspace{\baselineskip}
-CEE 588: Boundary Layer Meteorology\\
-Professor: Elie Bou-Zeid\\
-Semester: Spring 2018\\
-\vspace{\baselineskip}
-May 17\textsuperscript{th}, 2018\\
-\end{centering}
+%%%% TITLE PAGE %%%%
+\begin{titlepage}
+\begin{center}
+~\\[1cm]
+\textsc{\LARGE Princeton University}\\[1.5cm]
+\textsc{\Large CEE 588: Boundary Layer Meteorology}\\[1.5cm]
+\textbf{ \Large Forecasting Wind Velocity Using an Autoregressive Method}\\[1.5cm]
+{\large Joseph G.~Tylka}\\
+{\large \href{mailto:josephgt@princeton.edu}{josephgt@princeton.edu}}\\
+\vfill
+{\large Submitted: May 17\textsuperscript{th}, 2018}
+\end{center}
+\end{titlepage}
 
-%% Abstract
-% The first sentence should be a very succinct statement of the problem; almost a rewording of the title with a few explanatory words
-% The second sentence should give specific motivation for the work
-% The following 2-3 sentences should be about the adopted method and approach
-% The rest should be a statement of all the major findings
+\pagestyle{firstpages}
+%%%% ABSTRACT %%%%
 \begin{abstract}
+% The first sentence should be a very succinct statement of the problem; almost a rewording of the title with a few explanatory words
 An autoregressive method of forecasting wind velocity is implemented and characterized.
+% The second sentence should give specific motivation for the work
 Autoregression is a well-established method for near-term (typically at most two days) data-driven forecasting of wind velocity, but the performance of the model depends on the timescale characteristics of the wind data used to determine the coefficients of the model.
+% The following 2-3 sentences should be about the adopted method and approach
 Using the autocorrelation of a time-series dataset of wind velocities, relevant timescales are determined over which past wind velocities are useful predictors of future data.
 Subsequently, an autoregression model is implemented and its performance is compared, in terms of a prediction error, to that of two simpler predictive models: a persistence model and a random sample.
 Additionally, the performance of the autoregression model is characterized by examining the variation of prediction error with season and under daytime and nighttime conditions.
+% The rest should be a statement of all the major findings
 Results of the timescale analysis suggest that the wind system will tend to ``forget'' previous wind conditions after approximately 5.5 days.
 Indeed, results show that, while the autoregression model performs consistently superior to the alternative models, it reaches a plateau in prediction error over approximately that timescale.
 The autoregression model is also shown to yield more accurate predictions in the Summer than in the Winter, as well as during the day than at night.
 \end{abstract}
-
 \newpage
+\tableofcontents
+\newpage
+\listoffigures
 
 % Research questions:
 % Q1: what are the relevant timescales? i.e., how far into the future must one travel to "forget" about the previous wind conditions?
 % Q2: how does the autoregression method compare to persistence and random methods?
 % Q3: how does the performance of the autoregression method vary with season and time-of-day?
 
+\newpage
+\pagestyle{pages}
 %%%% INTRODUCTION %%%%
-% Motivation for work (from a very general perspective)
 \section{Introduction}
+% Motivation for work (from a very general perspective)
 In order to facilitate the integration of wind energy into the power grid, reliable methods of forecasting wind power output are required.
 % Review of previous work focusing on the remaining problems (questions or deficiencies) the present paper claims to contribute to solving
 %\subsection{Background and Previous Work}

@@ -28,7 +28,8 @@
 
 \begin{document}
 
-% Title and Author block %%TODO%% convert to title page
+% Title and Author block
+%%TODO%% convert to title page
 \begin{centering}
 {\Large \textbf{Forecasting Wind Velocity Using an Autoregressive Method}}\\
 \vspace{\baselineskip}
@@ -124,16 +125,17 @@ z_{0} \\ z_{1} \\ \vdots \\ z_{N_\text{out} - 1}
 
 \subsection{Pairwise Statistics Functions}
 Consider two (possibly complex-valued) sequences $X_n,Y_n$, for all integers $n \in [0,N-1]$.
-The cross-correlation of these sequences is given by, for all integers $m \in [-(N-1),N-1]$,
-\begin{equation}
+The cross-correlation of these sequences is given by\footnote{See: \url{https://www.mathworks.com/help/signal/ref/xcorr.html}}
+\begin{equation}\label{eq:xcorr}
 R_{XY}(m) =
 \begin{cases}
 \displaystyle \sum_{n=0}^{N-m-1} X_{n+m} \overline{Y_n}, & \text{for } m \geq 0,\\[20pt]
 \overline{R_{XY}}(-m), & \text{for } m < 0,
 \end{cases}
 \end{equation}
-where $\overline{(\cdot)}$ denotes taking the complex conjugate of the argument.
+for all integers $m \in [-(N-1),N-1]$, where $\overline{(\cdot)}$ denotes taking the complex conjugate of the argument.
 Furthermore, the autocorrelation of a single sequence, $X_n$, is given by $R_{XX}(m)$.
+Note that this definition differs from that given by \citet[Sec.~8.2.1]{Stull1988}, in which the mean of the sequence is removed (cf.~\eqnref{eq:xcov} below) and a normalization factor is included.
 
 Separating each sequence into two terms, the mean and the deviation from the mean, we can write
 \begin{equation}
@@ -145,8 +147,8 @@ where $\langle \cdot \rangle$ denotes taking the mean, i.e.,
 \begin{equation}
 \langle X \rangle = \frac{1}{N} \sum_{n = 0}^{N-1} X_n.
 \end{equation}
-The cross-covariance of $X_n$ and $Y_n$ is then given by
-\begin{equation}
+The cross-covariance of $X_n$ and $Y_n$ is then given by\footnote{See: \url{https://www.mathworks.com/help/signal/ref/xcov.html}}
+\begin{equation}\label{eq:xcov}
 C_{XY}(m) = 
 \begin{cases}
 \displaystyle \sum_{n=0}^{N-m-1} \left( X_{n+m} - \langle X \rangle \right) \left( \overline{Y_n} - \left\langle \overline{Y} \right\rangle \right), & \text{for } m \geq 0,\\[20pt]
@@ -207,8 +209,9 @@ C_{\zeta \zeta}(P-1) & C_{\zeta \zeta}(P-2) & \cdots & C_{\zeta \zeta}(0)
 
 %%%% METHODOLOGY %%%%
 \section{Methodology}\label{sec:Methodology}
-Using wind velocity data measured at the Cabauw meteorological tower, we perform spectral and statistical analyses to determine relevant timescales.
-Subsequently, we implement and characterize the three forecasting methods reviewed in \secref{sec:Methods}.
+In this work, we use a database of wind velocity measurements from the Cabauw meteorological tower,\footnote{Available for download here: \url{http://www.cesar-database.nl/Welcome.do}} which is a 213 m tall tower that has been recording, at several altitudes, the horizontal wind speed and direction since 1972 \citep{VanUldenWieringa1996}. %%TODO%% download paper and confirm
+We perform a pairwise statistical analysis of this data to determine relevant timescales, and
+subsequently, we implement and characterize the three forecasting methods reviewed in \secref{sec:Methods}.
 
 As our historical ``training'' dataset, $\zeta_m$, we use the wind velocity data measured from January 1\textsuperscript{st}, 2001, until (and including) December 31\textsuperscript{st}, 2010.
 These data are given at a sampling rate of $F_s = 6$ samples per hour.

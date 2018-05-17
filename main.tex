@@ -225,7 +225,7 @@ C_{\zeta \zeta}(P-1) & C_{\zeta \zeta}(P-2) & \cdots & C_{\zeta \zeta}(0)
 
 %%%% METHODOLOGY %%%%
 \section{Methodology}\label{sec:Methodology}
-In this work, we use a database of wind velocity measurements from the Cabauw meteorological tower,\footnote{Available for download here: \url{http://www.cesar-database.nl/Welcome.do}} which is a 213 m tall tower that has been recording, at several altitudes, the horizontal wind speed and direction since 1972 \citep{VanUldenWieringa1996}. %%TODO%% download paper and confirm
+In this work, we use a database of wind velocity measurements from the Cabauw meteorological tower,\footnote{Available for download here: \url{http://www.cesar-database.nl/Welcome.do}} which is a 213 m tall tower that has been recording, at several vertical heights, the horizontal wind speed and direction since 1986 \citep[Table I]{VanUldenWieringa1996}.
 We perform a pairwise statistical analysis of this data to determine relevant timescales, and
 subsequently, we implement and characterize the three forecasting methods reviewed in \secref{sec:Methods}.
 
@@ -290,8 +290,9 @@ whose values are found to be $T_U = 5.44$ days and $T_V = 1.71$ days.
 
 \begin{figure}[htb]
 \centering
-\includegraphics[width=\columnwidth]{figures/AutocorrelationSequences_90days}
-\caption{Autocorrelation sequences $R_{UU}$ and $R_{VV}$.}
+\includegraphics[width=0.7\columnwidth]{figures/AutocorrelationSequences_90days}
+\caption{Autocorrelation sequences $R_{UU}$ (blue curve) and $R_{VV}$ (red).
+The filled regions correspond to the summations computed using \eqnref{eq:Timescale_mod} to find the timescales $T_U$ and $T_V$.}
 \label{fig:Autocorrelations}
 \end{figure}
 
@@ -311,8 +312,8 @@ From this plot, we see that the autoregression method performs consistently supe
 
 \begin{figure}[htb]
 \centering
-\includegraphics[width=\columnwidth]{figures/ComparisonRMSPredictionError}
-\caption{Comparison of rms prediction errors.}
+\includegraphics[width=0.7\columnwidth]{figures/ComparisonRMSPredictionError}
+\caption{Comparison of rms prediction errors incurred by the persistence (blue curve), random sample (red), and autoregression (green) models.}
 \label{fig:ComparisonRMS}
 \end{figure}
 
@@ -332,8 +333,8 @@ This might suggest that wind conditions in the Spring or Summer tend to be ``mor
 
 \begin{figure}[htb]
 \centering
-\includegraphics[width=\columnwidth]{figures/SeasonalRMSPredictionError}
-\caption{Seasonal dependence of rms prediction errors.}
+\includegraphics[width=0.7\columnwidth]{figures/SeasonalRMSPredictionError}
+\caption{Seasonal dependence of rms prediction errors incurred by the autoregression method.}
 \label{fig:SeasonalRMS}
 \end{figure}
 
@@ -345,8 +346,9 @@ Consequently, we infer that nighttime wind conditions are more useful predictors
 
 \begin{figure}[htb]
 \centering
-\includegraphics[width=\columnwidth]{figures/DiurnalRMSPredictionError}
-\caption{Diurnal dependence of rms prediction errors.}
+\includegraphics[width=0.7\columnwidth]{figures/DiurnalRMSPredictionError}
+\caption{Diurnal dependence of rms prediction errors incurred by the autoregression method.
+For daytime predictions (red curve), $t = 0$ corresponds to 8AM, while for nighttime predictions (blue), $t = 0$ corresponds to 8PM.}
 \label{fig:DiurnalRMS}
 \end{figure}
 

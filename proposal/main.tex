@@ -23,12 +23,14 @@
 
 % Title and Author block
 \begin{centering}
-{\Large \textbf{Final Project Proposal}}\\
+{\Large \textbf{Characterization and Forecasting of Wind Data}}\\
+\vspace{\baselineskip}
+{\large \textbf{Final Project Proposal}}\\
 \vspace{\baselineskip}
 Joseph G. Tylka\\
 \href{mailto:josephgt@princeton.edu}{josephgt@princeton.edu}\\
 \vspace{\baselineskip}
-April 26\textsuperscript{th}, 2018\\
+May 11\textsuperscript{th}, 2018\\
 \end{centering}
 
 %% Abstract
@@ -37,10 +39,10 @@ April 26\textsuperscript{th}, 2018\\
 % The following 2-3 sentences should be about the adopted method and approach
 % The rest should be a statement of all the major findings
 \begin{abstract}
-A method is proposed for forecasting wind velocities based on a principal components analysis of historical data.
-% Motivation
-The forecasting method relies on principal components of historical wind data taken over several timescales.
-These timescales are determined based on a spectral analysis of the historical wind data, as well as an analysis of variance between these data and several possibly-relevant timescales.
+Using experimentally measured wind data at various heights, parameters of the atmospheric boundary layer are estimated.
+Existing methods for forecasting wind data rely on the roughness height and eddy viscosity.
+In this work, these parameters are
+Two well-established forecasting methods, persistence and autoregression, are implemented and evaluated.
 
 \end{abstract}
 
@@ -51,5 +53,19 @@ These timescales are determined based on a spectral analysis of the historical w
 \item Alternatively, construct autoregressive model composed of AR coefficients on each timescale
 \item Evaluate proposed model by comparison with real data
 \end{enumerate}
+
+According to the log-law, the wind magnitude is given by
+\begin{equation}
+|U(z)| = 
+\end{equation}
+
+Beginning with the expression for $\nu_T(z)$ given in Eq.~(21), we first differentiate $\nu_T(z)/z$ with respect to $z$, yielding
+\begin{equation}
+\frac{\partial}{\partial z} \left[ \frac{\nu_T(z)}{z} \right] = \overline{|A_g|} L_0 \frac{\partial}{\partial z} \left[ \frac{2}{z_i} - \frac{z}{z_i^2} \right] = -\frac{\overline{|A_g|} L_0}{z_i^2}.
+\end{equation}
+Substituting this into Eq.~(14) yields
+\begin{equation}
+\alpha(z) = \frac{\overline{|A_g|} L_0}{z_i^2 \log(z/z_0)}.
+\end{equation}
 
 \end{document}

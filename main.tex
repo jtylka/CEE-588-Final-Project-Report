@@ -120,7 +120,7 @@ For simplicity, we consider $t_n < 0$ to be the ``past'' and $t_n \geq 0$ to be 
 We write the wind velocity as a complex variable, $z(t) = u(t) + i v(t)$, where $i$ is the imaginary unit, and denote the sampled wind data by $u_n = u(t_n)$, $v_n = v(t_n)$, and $z_n = z(t_n)$.
 The goal of data-driven wind velocity forecasting is to use past wind data, say $N_\text{in}$ previous samples, to predict $N_\text{out}$ future samples.
 That is, 
-\begin{equation}
+\begin{equation} %%NOTE%% use "prime" notation?
 \mathbf{z}_\text{out} = f(\mathbf{z}_\text{in})
 \end{equation}
 where $f$ is some predictive function and $\mathbf{z}_\textrm{in}$ and $\mathbf{z}_\text{out}$ are column-vectors of past and future wind data, respectively, given by
@@ -139,7 +139,7 @@ z_{0} \\ z_{1} \\ \vdots \\ z_{N_\text{out} - 1}
 \subsection{Pairwise Statistics Functions}
 Consider two (possibly complex-valued) sequences $X_n,Y_n$, for all integers $n \in [0,N-1]$.
 Separating each sequence into two terms, the mean and the deviation from the mean, we can write
-\begin{equation}
+\begin{equation} %%NOTE%% revise "prime" notation
 X_n = X_n' + \langle X \rangle
 \quad\quad \text{and} \quad\quad
 Y_n = Y_n' + \langle Y \rangle,
@@ -229,7 +229,7 @@ Similar to the persistence model, we can expect (and again we will see in \secre
 
 %%%% METHODOLOGY %%%%
 \section{Methodology}\label{sec:Methodology}
-In this work, we use a database of wind velocity measurements from the Cabauw meteorological tower,\footnote{Available for download here: \url{http://www.cesar-database.nl/Welcome.do}} which is a 213 m tall tower that has been recording, at several vertical heights, the horizontal wind speed and direction since 1986 \citep[Table I]{VanUldenWieringa1996}.
+In this work, we use a database of wind velocity measurements from the Cabauw meteorological tower,\footnote{Available for download here: \url{http://www.cesar-database.nl/Welcome.do}} which is a 213 m tall tower that has been recording, at several vertical heights, the horizontal wind speed and direction since 1986 \citep[Table I]{VanUldenWieringa1996}. %%NOTE%% what type of sensors are used?
 We perform a pairwise statistical analysis of this data to determine relevant timescales, and
 subsequently, we implement and characterize the three forecasting methods reviewed in \secref{sec:Methods}.
 
@@ -306,7 +306,7 @@ The filled regions correspond to the summations computed using \eqnref{eq:Timesc
 
 We find the timescales computed with \eqnref{eq:Timescale_mod} to be $T_U \approx 5.44$ days and $T_V \approx 1.71$ days.
 These values suggest that the stream-wise winds tend to remain correlated for $\sim 5.5$ days, while the cross-stream winds remain correlated for only $\sim 2$ days.
-Consequently, we can expect the errors incurred by the autoregression and persistence models to attain relatively constant values after $\sim 5.5$ days. %%NOTE%% cf. Giebel2011
+Consequently, we can expect the errors incurred by the autoregression and persistence models to attain relatively constant values after $\sim 5.5$ days. %%NOTE%% does this agree with knowledge?
 
 \subsection{Performance Characterization}
 Here, we construct an autoregression model, as described in \secref{sec:Methods:Autoregression}, with an order $P$ corresponding to 2 days, i.e., $P = 2 \times 24 F_s$, where $F_s$ is given in samples per hour.
@@ -333,7 +333,7 @@ We interpret this behavior as corresponding to the system ``forgetting'' about t
 Similarly, we see that the autoregression model reaches a similar plateau in RMS error beyond $T_U$.
 However, these errors are still smaller than those of the persistence and random sample models.
 This suggests that, even though the system has ``forgotten'' about the previous wind conditions, the autoregression model is still able to achieve predictions that are \textit{slightly} more accurate than the totally independent predictions produced by the alternative methods.
-Although not shown here, it can be verified that these plateaus continue even when forecasting up to 365 days into the future. %%TODO%% something
+Although not shown here, it can be verified that these plateaus remain constant even when forecasting up to 365 days into the future. %%NOTE%% show this?
 
 \subsubsection{Seasonal and Time-of-Day Dependence}
 The RMS prediction errors incurred in each season by the autoregression model are plotted in \figref{fig:SeasonalRMS}.
@@ -352,7 +352,7 @@ The RMS prediction errors incurred under daytime and nighttime conditions by the
 From this plot, we see that the prediction errors incurred during the day are consistently smaller than those incurred at night.
 This is somewhat surprising, as we might expect nighttime conditions to be ``more predictable'' due to the stability of the atmospheric boundary layer \citep[Fig.~1.7]{Stull1988}.
 However, these results suggest that the autoregression method is better able to predict daytime wind conditions given data from the previous night, than it is to predict nighttime wind conditions given data from the previous day.
-Consequently, we infer that nighttime wind conditions are more useful predictors of the following day's winds than the opposite.
+Consequently, we infer that nighttime wind conditions are more useful predictors of the following day's winds than the opposite. %%TODO%% revise language here - slight improvement
 
 \begin{figure}[htb]
 \centering

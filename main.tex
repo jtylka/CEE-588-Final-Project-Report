@@ -10,12 +10,7 @@
 \usepackage{fancyhdr}
 \renewcommand{\headrulewidth}{1pt}
 \fancypagestyle{firstpages}{ % For first few pages
-%\lhead{}\chead{\textsc{Princeton University ~~$\cdot$~~ CEE 588: Boundary Layer Meteorology ~~$\cdot$~~ J.~G.~Tylka}}\rhead{}
 \lhead{\textsc{CEE 588}}\chead{\textsc{Princeton University}}\rhead{\textsc{J.~G.~Tylka}}
-%\fancyhead[CO]{\textsc{CEE 588: Boundary Layer Meteorology $\cdot$ Princeton University}}
-%\fancyhead[LE]{\textsc{Wind Velocity Forecasting}}
-%\fancyhead[RE]{\textsc{J.~G.~Tylka}}
-%\fancyhead[LO,CE,RO]{}
 \lfoot{}\cfoot{\thepage}\rfoot{}
 \pagenumbering{roman}
 }
@@ -244,11 +239,11 @@ We then realign the training dataset and all wind data used hereafter such that
 
 \subsection{Timescale Analysis}\label{sec:Methodology:Timescale}
 In order to determine the timescales over which an autoregressive model can be expected to perform well, we compute the autocorrelation of both $U_m$ and $V_m$, where $\zeta_m = U_m + i V_m$.
-From these autocorrelation sequences, we define a timescale, $T_X$ (where $X$ can be replaced by either $U$ or $V$), given by
+From these autocorrelation sequences, we define a timescale, $T_X$ (where $X$ can be replaced by either $U$ or $V$), given by \citep{ONeill2004}
 \begin{equation}\label{eq:Timescale}
 T_X = \sum_{m = 0}^{M-1} R_{XX}(m) \Delta t,
-\end{equation} %%TODO%% give citation?
-where $\Delta t = 1/F_s$.
+\end{equation}
+where $\Delta t = 1/F_s$.\footnote{Also see: \url{https://en.wikipedia.org/wiki/Integral_length_scale}}
 However, in practice, we may choose to sum only over $M_\text{max}$ samples, where $M_\text{max} < M$ and is chosen based on when $R_{XX}$ reaches a sufficiently small value.
 Here, we choose $M_\text{max}$ as the point at which $R_{XX}$ reaches its ``steady-state'' value, $\tilde{R}_{XX}$.
 
@@ -372,7 +367,7 @@ Here, ``Winter'' (blue curve) refers to December through February;
 ``Summer'' (red) refers to June through August; and
 ``Fall'' (yellow) refers to September through November.}
 \label{fig:SeasonalRMSE}
-\end{figure}
+\end{figure} %%TODO%% replace with unbiased xcov
 
 The RMS prediction errors incurred under daytime and nighttime conditions by the autoregressive model are plotted in \figref{fig:DiurnalRMSE}.
 From this plot, we see that the prediction errors incurred during the day are almost everywhere slightly smaller than those incurred at night.
@@ -386,7 +381,7 @@ Consequently, we infer that nighttime wind conditions are more useful predictors
 \caption{Time-of-day dependence of prediction errors incurred by the autoregressive model.
 For daytime predictions (red curve), $t = 0$ corresponds to 8AM, while for nighttime predictions (blue), $t = 0$ corresponds to 8PM.}
 \label{fig:DiurnalRMSE}
-\end{figure}
+\end{figure} %%TODO%% replace with unbiased xcov
 
 %%%% CONCLUSIONS %%%%
 \section{Summary and Conclusions}\label{sec:Conclusions}

@@ -65,7 +65,7 @@ Additionally, the performance of the autoregressive model is characterized by ex
 % The rest should be a statement of all the major findings
 Results of the timescale analysis suggest that the wind system will tend to ``forget'' previous wind conditions after approximately 5.5 days.
 Indeed, performance results show that, while the autoregressive model consistently outperforms the alternative models, it reaches a plateau in prediction error over approximately that timescale.
-The autoregressive model is also shown to yield more accurate predictions in the Summer than in the Winter, as well as during the day than at night.
+The autoregressive model is also shown to yield significantly more accurate predictions in the Summer than in the Winter, and slightly more accurate predictions during the day than at night.
 \end{abstract}
 \newpage
 \tableofcontents
@@ -367,13 +367,12 @@ Here, ``Winter'' (blue curve) refers to December through February;
 ``Summer'' (red) refers to June through August; and
 ``Fall'' (yellow) refers to September through November.}
 \label{fig:SeasonalRMSE}
-\end{figure} %%TODO%% replace with unbiased xcov
+\end{figure}
 
 The RMS prediction errors incurred under daytime and nighttime conditions by the autoregressive model are plotted in \figref{fig:DiurnalRMSE}.
-From this plot, we see that the prediction errors incurred during the day are almost everywhere slightly smaller than those incurred at night.
+From this plot, we see that the prediction errors incurred during the day are usually slightly smaller than those incurred at night.
 This is somewhat surprising, as we might expect nighttime conditions to be ``more predictable'' due to the stability of the atmospheric boundary layer \citep[Fig.~1.7]{Stull1988}.
-However, these results suggest that the autoregressive model is slightly better able to predict daytime wind conditions given data from the previous night, than it is to predict nighttime wind conditions given data from the previous day.
-Consequently, we infer that nighttime wind conditions are more useful predictors of the following day's winds than the opposite.
+However, these results suggest that the autoregressive model may be better able to predict daytime wind conditions given data from the previous night, than it is to predict nighttime wind conditions given data from the previous day.
 
 \begin{figure}[htb]
 \centering
@@ -381,7 +380,7 @@ Consequently, we infer that nighttime wind conditions are more useful predictors
 \caption{Time-of-day dependence of prediction errors incurred by the autoregressive model.
 For daytime predictions (red curve), $t = 0$ corresponds to 8AM, while for nighttime predictions (blue), $t = 0$ corresponds to 8PM.}
 \label{fig:DiurnalRMSE}
-\end{figure} %%TODO%% replace with unbiased xcov
+\end{figure}
 
 %%%% CONCLUSIONS %%%%
 \section{Summary and Conclusions}\label{sec:Conclusions}
@@ -393,7 +392,7 @@ Additionally, we examined the dependence of the incurred prediction errors on se
 Results of the timescale analysis suggest that the wind system will tend to ``forget'' previous wind conditions after approximately 5.5 days (see \secref{sec:Results:Timescale}).
 Indeed, results show that, while the autoregressive model consistently outperforms the simpler alternative models, it reaches a plateau in prediction error over approximately that timescale (see \figref{fig:ComparisonRMSE:30days}).
 The autoregressive model was also found to yield more accurate predictions in the Summer than in the Winter (see \figref{fig:SeasonalRMSE}), which suggests that wind conditions in the Summer may be more consistent and ``predictable'' as a result.
-Daytime predictions of wind velocity were also found to be more accurate than nighttime predictions (see \figref{fig:DiurnalRMSE}), which suggests that nighttime wind conditions are more useful predictors of the following day's winds than the opposite.
+Daytime predictions of wind velocity were also found to be slightly more accurate than nighttime predictions (see \figref{fig:DiurnalRMSE}), although this discrepancy does not appear to be significant.
 
 \subsection{Future Work}
 Future investigations should include an implementation of more sophisticated autoregressive models.

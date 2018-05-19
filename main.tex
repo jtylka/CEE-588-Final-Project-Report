@@ -269,9 +269,9 @@ To do this, we randomly select test segments of measured wind data from an ``eva
 Each test segment is $N_\text{in} + N_\text{out}$ samples long, where the first $N_\text{in}$ samples are given as an input to each model, and the following $N_\text{out}$ samples serve as a reference against which each model's prediction is compared.
 We then compute the prediction error, $\epsilon_n = z_n - z_n'$, for all integers $n \in [0,N_\text{out}-1]$, where $z_n$ and $z_n'$ are the true (reference) and predicted wind velocities, respectively.
 
-We perform this calculation for $Q$ randomly selected test segments, and compute the mean absolute error over all test segments, given by
-\begin{equation}\label{eq:MAE}
-\overline{\epsilon}_n = \frac{1}{Q} \sum_{q = 1}^Q \left| \epsilon_n^{(q)} \right|,
+We perform this calculation for $Q$ randomly selected test segments, and compute the root-mean-square (RMS) magnitude error over all test segments, given by
+\begin{equation}\label{eq:RMSE}
+\overline{\epsilon}_n = \sqrt{ \frac{1}{Q} \sum_{q = 1}^Q \left| \epsilon_n^{(q)} \right|^2 },
 \end{equation}
 where $\epsilon_n^{(q)}$ is the prediction error for the $q^\text{th}$ test segment.
 
@@ -311,51 +311,51 @@ This timescale corresponds well with the previously mentioned limitation of mode
 
 \subsection{Performance Characterization}
 Here, we construct an autoregressive model, as described in \secref{sec:Models:Autoregression}, with an order $P$ corresponding to 2 days, i.e., $P = 2 \times 24 F_s$, where $F_s$ is given in samples per hour.
-In each analysis below, we take $N_\text{in} = 2 \times 24 F_s$ input samples and we compute, using \eqnref{eq:MAE}, the average error over $Q = 100$ test segments.
+In each analysis below, we take $N_\text{in} = 2 \times 24 F_s$ input samples and we compute, using \eqnref{eq:RMSE}, the RMS error over $Q = 100$ test segments.
 
 \subsubsection{Comparison of Forecasting Models}\label{sec:Results:Comparison}
-The average prediction errors incurred by each forecasting model are plotted in \figref{fig:ComparisonMAE:12hrs} for a forecast duration of 12 hours (i.e., $N_\text{out} = 12 F_s$).
+The RMS prediction errors incurred by each forecasting model are plotted in \figref{fig:ComparisonRMSE:12hrs} for a forecast duration of 12 hours (i.e., $N_\text{out} = 12 F_s$).
 From this plot, we see that the autoregressive model performs comparably to, if not slightly better than, persistence over almost the entire forecast duration.
-As expected, we see that the average errors incurred by the random sample model are approximately constant with time.
+As expected, we see that the RMS errors incurred by the random sample model are approximately constant with time.
 
 \begin{figure}[htb]
 \centering
-\includegraphics[width=0.7\columnwidth]{figures/ComparisonAvgPredictionError_12hrs}
-\caption{Comparison of average prediction errors incurred by the persistence (blue curve), random sample (red), and autoregressive (green) models for predictions up to 12 hours.
-The horizontal dashed red line indicates the average (mean) value of the error for the random sample model (equal to approximately 11 m/s).}
-\label{fig:ComparisonMAE:12hrs}
+\includegraphics[width=0.7\columnwidth]{figures/ComparisonRMSPredictionError_12hrs}
+\caption{Comparison of RMS prediction errors incurred by the persistence (blue curve), random sample (red), and autoregressive (green) models for predictions up to 12 hours.
+The horizontal dashed red line indicates the average (mean) value of the RMS error for the random sample model (equal to approximately 12.5 m/s).}
+\label{fig:ComparisonRMSE:12hrs}
 \end{figure}
 
-In \figref{fig:ComparisonMAE:30days}, we again plot the average prediction errors incurred by each model, now for a forecast duration of 30 days (i.e., $N_\text{out} = 30 \times 24 F_s$).
+In \figref{fig:ComparisonRMSE:30days}, we again plot the RMS prediction errors incurred by each model, now for a forecast duration of 30 days (i.e., $N_\text{out} = 30 \times 24 F_s$).
 From this plot, we see that, beyond about 1 day, the autoregressive model consistently outperforms persistence.
 Additionally, we see that the errors incurred by the persistence model are small at small $t_n$, but ultimately reach similar values to those incurred by the random sample model.
 We interpret this behavior as corresponding to the system ``forgetting'' about the previous wind conditions, and, in particular, we see that this happens when $t_n \approx T_U \sim 5.5$ days.
 
 \begin{figure}[htb]
 \centering
-\includegraphics[width=0.7\columnwidth]{figures/ComparisonAvgPredictionError_30days}
-\caption{Comparison of average prediction errors incurred by each model for predictions up to 30 days.
+\includegraphics[width=0.7\columnwidth]{figures/ComparisonRMSPredictionError_30days}
+\caption{Comparison of RMS prediction errors incurred by each model for predictions up to 30 days.
 The vertical dashed lines indicate 2 and 5.5 days.
-See \figref{fig:ComparisonMAE:12hrs} for more details.}
-\label{fig:ComparisonMAE:30days}
+See \figref{fig:ComparisonRMSE:12hrs} for more details.}
+\label{fig:ComparisonRMSE:30days}
 \end{figure}
 
-Similarly, we see that the autoregressive model reaches a similar plateau in average error beyond $T_U$.
+Similarly, we see that the autoregressive model reaches a similar plateau in RMS error beyond $T_U$.
 However, these errors are still smaller than those of the persistence and random sample models.
 This suggests that, even though the system has ``forgotten'' about the previous wind conditions, the autoregressive model is still able to achieve predictions that are, on average, slightly more accurate than the totally independent predictions produced by the alternative models.
-As shown in \figref{fig:ComparisonMAE:365days}, these plateaus remain constant even when forecasting up to 365 days into the future (i.e., $N_\text{out} = 365 \times 24 F_s$).
+As shown in \figref{fig:ComparisonRMSE:365days}, these plateaus remain constant even when forecasting up to 365 days into the future (i.e., $N_\text{out} = 365 \times 24 F_s$).
 
 \begin{figure}[htb]
 \centering
-\includegraphics[width=0.7\columnwidth]{figures/ComparisonAvgPredictionError_365days}
-\caption{Comparison of average prediction errors incurred by each model for predictions up to 365 days.
+\includegraphics[width=0.7\columnwidth]{figures/ComparisonRMSPredictionError_365days}
+\caption{Comparison of RMS prediction errors incurred by each model for predictions up to 365 days.
 For clarity, the data have been smoothed by computing a 48-hour moving average.
-See \figref{fig:ComparisonMAE:12hrs} for more details.}
-\label{fig:ComparisonMAE:365days}
+See \figref{fig:ComparisonRMSE:12hrs} for more details.}
+\label{fig:ComparisonRMSE:365days}
 \end{figure}
 
 \subsubsection{Seasonal and Time-of-Day Dependence}
-The average prediction errors incurred in each season by the autoregressive model are plotted in \figref{fig:SeasonalMAE}.
+The RMS prediction errors incurred in each season by the autoregressive model are plotted in \figref{fig:SeasonalRMSE}.
 From this plot, we see that the errors are smallest in the Summer and largest in the Winter.
 This suggests that wind conditions in Spring and Summer tend to be ``more predictable'' than those in Fall or Winter.
 Recall that the model coefficients used here were computed using 10 years of continuous data (see 
@@ -364,17 +364,17 @@ Consequently, that there exists a significant seasonal dependence in the observe
 
 \begin{figure}[htb]
 \centering
-\includegraphics[width=0.7\columnwidth]{figures/SeasonalAvgPredictionError}
-\caption{Seasonal dependence of average prediction errors incurred by the autoregressive model.
+\includegraphics[width=0.7\columnwidth]{figures/SeasonalRMSPredictionError}
+\caption{Seasonal dependence of prediction errors incurred by the autoregressive model.
 The vertical dashed lines indicate 2 and 5.5 days.
 Here, ``Winter'' (blue curve) refers to December through February;
 ``Spring'' (green) refers to March through May;
 ``Summer'' (red) refers to June through August; and
 ``Fall'' (yellow) refers to September through November.}
-\label{fig:SeasonalMAE}
+\label{fig:SeasonalRMSE}
 \end{figure}
 
-The average prediction errors incurred under daytime and nighttime conditions by the autoregressive model are plotted in \figref{fig:DiurnalMAE}.
+The RMS prediction errors incurred under daytime and nighttime conditions by the autoregressive model are plotted in \figref{fig:DiurnalRMSE}.
 From this plot, we see that the prediction errors incurred during the day are almost everywhere slightly smaller than those incurred at night.
 This is somewhat surprising, as we might expect nighttime conditions to be ``more predictable'' due to the stability of the atmospheric boundary layer \citep[Fig.~1.7]{Stull1988}.
 However, these results suggest that the autoregressive model is slightly better able to predict daytime wind conditions given data from the previous night, than it is to predict nighttime wind conditions given data from the previous day.
@@ -382,23 +382,23 @@ Consequently, we infer that nighttime wind conditions are more useful predictors
 
 \begin{figure}[htb]
 \centering
-\includegraphics[width=0.7\columnwidth]{figures/DiurnalAvgPredictionError}
-\caption{Time-of-day dependence of average prediction errors incurred by the autoregressive model.
+\includegraphics[width=0.7\columnwidth]{figures/DiurnalRMSPredictionError}
+\caption{Time-of-day dependence of prediction errors incurred by the autoregressive model.
 For daytime predictions (red curve), $t = 0$ corresponds to 8AM, while for nighttime predictions (blue), $t = 0$ corresponds to 8PM.}
-\label{fig:DiurnalMAE}
+\label{fig:DiurnalRMSE}
 \end{figure}
 
 %%%% CONCLUSIONS %%%%
 \section{Summary and Conclusions}\label{sec:Conclusions}
 In this work we implemented and characterized the performance of an autoregressive model for wind velocity forecasting.
 We first determined the relevant timescales over which an autoregressive model can be expected to perform well by analyzing the autocorrelation of a dataset of historical wind data.
-Subsequently, we compared, over various timescales and in terms of an average prediction error, the performance of the autoregressive model to the performances of two simpler predictive models: persistence and a random sample.
+Subsequently, we compared, over various timescales and in terms of an RMS prediction error, the performance of the autoregressive model to the performances of two simpler predictive models: persistence and a random sample.
 Additionally, we examined the dependence of the incurred prediction errors on season and on time of day.
 
 Results of the timescale analysis suggest that the wind system will tend to ``forget'' previous wind conditions after approximately 5.5 days (see \secref{sec:Results:Timescale}).
-Indeed, results show that, while the autoregressive model consistently outperforms the simpler alternative models, it reaches a plateau in prediction error over approximately that timescale (see \figref{fig:ComparisonMAE:30days}).
-The autoregressive model was also found to yield more accurate predictions in the Summer than in the Winter (see \figref{fig:SeasonalMAE}), which suggests that wind conditions in the Summer may be more consistent and ``predictable'' as a result.
-Daytime predictions of wind velocity were also found to be more accurate than nighttime predictions (see \figref{fig:DiurnalMAE}), which suggests that nighttime wind conditions are more useful predictors of the following day's winds than the opposite.
+Indeed, results show that, while the autoregressive model consistently outperforms the simpler alternative models, it reaches a plateau in prediction error over approximately that timescale (see \figref{fig:ComparisonRMSE:30days}).
+The autoregressive model was also found to yield more accurate predictions in the Summer than in the Winter (see \figref{fig:SeasonalRMSE}), which suggests that wind conditions in the Summer may be more consistent and ``predictable'' as a result.
+Daytime predictions of wind velocity were also found to be more accurate than nighttime predictions (see \figref{fig:DiurnalRMSE}), which suggests that nighttime wind conditions are more useful predictors of the following day's winds than the opposite.
 
 \subsection{Future Work}
 Future investigations should include an implementation of more sophisticated autoregressive models.

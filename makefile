@@ -1,4 +1,4 @@
-TEX_FILES := $(wildcard */main.tex) $(wildcard */proposal/main.tex)
+TEX_FILES := main.tex $(wildcard */main.tex)
 PDF_FILES := $(patsubst %.tex, %.pdf, $(TEX_FILES))
 TEX_FOLDERS := $(dir $(TEX_FILES))
 INTERMEDIATES := *.out *.aux *.log *.synctex.gz *.bbl *.blg *.nlo

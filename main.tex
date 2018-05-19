@@ -47,7 +47,7 @@
 {\large Joseph G.~Tylka}\\
 {\large \href{mailto:josephgt@princeton.edu}{josephgt@princeton.edu}}\\
 \vfill
-{\large Submitted: May 18\textsuperscript{th}, 2018}
+{\large Submitted: May 19\textsuperscript{th}, 2018}
 \end{center}
 \end{titlepage}
 
@@ -59,7 +59,8 @@ An autoregressive model for forecasting wind velocity is implemented and charact
 % The second sentence should give specific motivation for the work
 Autoregression is a well-established method for short-term (intraday) time-series forecasting of wind velocity, but the performance of the model depends on the temporal characteristics of the winds.
 % The following 2-3 sentences should be about the adopted method and approach
-Using the autocorrelation of a time-series dataset of wind velocities, relevant timescales over which past wind velocities might be useful predictors of future data are determined.
+Given a time-series dataset of past wind velocities, an autocorrelation is computed and used to determine relevant timescales over which past wind velocities might be useful predictors of future data.
+%Using the autocorrelation of a time-series dataset of wind velocities, relevant timescales over which past wind velocities might be useful predictors of future data are determined.
 Subsequently, an autoregressive model is implemented and its performance is compared, in terms of a prediction error, to the performances of two simpler predictive models: persistence and a random sample.
 Additionally, the performance of the autoregressive model is characterized by examining the dependence of the incurred prediction errors on season and on time of day.
 % The rest should be a statement of all the major findings
@@ -75,7 +76,7 @@ The autoregressive model is also shown to yield significantly more accurate pred
 % Research questions:
 % Q1: what are the relevant timescales? i.e., how far into the future must one travel to "forget" about the previous wind conditions?
 % Q2: how does the autoregressive model compare to persistence and random models?
-% Q3: how does the performance of the autoregressive model vary with season and time-of-day?
+% Q3: how does the performance of the autoregressive model vary with season and time of day?
 
 \newpage
 \pagestyle{pages}
@@ -96,7 +97,7 @@ Consequently, the primary objective of the present work is to empirically determ
 \citet{Brown1984} first proposed using an autoregressive model to forecast wind speed and power, but found that their model only yields accurate predictions up to about 3 hours ahead.
 On a similar timescale, \citet{LandbergWatson1994} found that persistence models, which model future wind conditions as identical to the most recent measurement, tend to outperform their NWP model up to about 6 hours ahead.
 Numerous other studies, many of which are reviewed by \citet[Sec.~2.1]{Giebel2011}, have demonstrated that autoregressive (or, more generally, autoregressive moving-average) models can be optimized to outperform persistence over most, if not all, timescales.
-Nevertheless, it is an additional objective of the present work to compare, over various timescales, the forecasting accuracies of persistence and autoregressive models.
+In view of these findings, here, we use persistence as a benchmark against which to compare the forecasting accuracy of the autoregressive model.
 
 % A statement of the paper's main question(s) and goal(s), followed by a succinct description of the general method and approach to be described in the paper
 In order to determine the timescales over which an autoregressive model can be expected to perform well, we analyze the autocorrelation of a dataset of historical wind velocities. %%TODO%% "we" vs "I"
@@ -140,7 +141,7 @@ R_{XY}(m) =
 \end{equation}
 for all integers $m \in [-(N-1),N-1]$, where $\overline{(\cdot)}$ denotes taking the complex conjugate of the argument.
 Furthermore, the autocorrelation of a single sequence, $X_n$, is given by $R_{XX}(m)$.
-Note that this definition differs from that given by \citet[Sec.~8.2.1]{Stull1988}, in which the mean of the sequence is removed (cf.~\eqnref{eq:xcov} below) and a normalization factor is included.
+Note that this definition differs from that given by \citet[Sec.~8.2.1]{Stull1988}, in which the mean of the sequence is removed (cf.~\eqnref{eq:xcov} below) and a different normalization is used.
 
 Similarly, an unbiased estimate of the cross-covariance of $X_n$ and $Y_n$ is given by\footnote{See: \url{https://www.mathworks.com/help/signal/ref/xcov.html}}
 \begin{equation}\label{eq:xcov}
@@ -174,7 +175,7 @@ That is, for some randomly selected integer $r \in [0, M - N_\text{out}]$, we ta
 \begin{equation}
 z_n' = \zeta_{r+n}, \text{ for all } n \in [0, N_\text{out} - 1].
 \end{equation}
-For this model, we can expect (and again we will see in \secref{sec:Results:Comparison}) that the prediction errors will be large and relatively constant with time, as the randomly selected segment is likely to be mostly uncorrelated with the true future data.
+For this model, we can expect (and again we will see in \secref{sec:Results:Comparison}) that the prediction errors will be large and, on average, relatively constant with time, as the randomly selected segment is likely uncorrelated with the true future data.
 
 \subsubsection{Autoregression}\label{sec:Models:Autoregression}
 An autoregressive model of order $P$ uses a linear combination of the $P$ most recent time samples to predict the following one.
@@ -213,15 +214,16 @@ C_{\zeta \zeta}(P-1) & C_{\zeta \zeta}(P-2) & \cdots & C_{\zeta \zeta}(0)
 \phi_2 \\
 \vdots \\
 \phi_P
-\end{bmatrix}.
+\end{bmatrix},
 \end{equation}
+where $C_{\zeta \zeta}$ is computed using \eqnref{eq:xcov}.
 
 Similar to the persistence model, we can expect (and again we will see in \secref{sec:Results:Comparison}) that the prediction errors incurred by this model will be small in the very short-term, but will then increase with increasing time as the wind system ``forgets'' about the previous wind conditions.
 
 %%%% METHODOLOGY %%%%
 \section{Methodology}\label{sec:Methodology}
 In this work, we use a database of wind velocity measurements from the Cabauw meteorological tower,\footnote{Available for download here: \url{http://www.cesar-database.nl/Welcome.do}} which is a 213 m tall tower that has been recording, since 1986, the horizontal wind speed and direction at several vertical heights \citep[Table I]{VanUldenWieringa1996}. 
-According to \citet[Sec.~2.1]{Petrovic2018}, wind speeds and directions are recorded using a combination of cup and sonic anemometers and weather vanes.
+These wind speeds and directions are measured using a combination of cup and sonic anemometers and weather vanes \citep[Sec.~2.1]{Petrovic2018}.
 We perform a pairwise statistical analysis of this data to determine relevant timescales, and
 subsequently, we implement and characterize the three forecasting models reviewed in \secref{sec:Models}.
 
@@ -230,7 +232,7 @@ These data are given at a sampling rate of $F_s = 6$ samples per hour.
 As a pre-processing step, we first determine a nominal ``average'' direction for the wind.
 To do this, we compute the wind direction $\theta_m = \arg (\zeta_m)$, where $\arg ( \cdot )$ denotes taking the argument (i.e., phase angle) of a complex number, such that $\zeta_m = |\zeta_m| e^{i \theta_m}$.
 We then compute a histogram of these $\theta_m$, with a bin width of $3^\circ$, and subsequently find the peak of this histogram, which, for these data, occurs at $\hat{\theta} = -130.5^\circ$. %%TODO%% what is 0^\circ?
-We then realign the training dataset and all wind data used hereafter such that
+We then realign the training dataset and all other wind data used hereafter by computing
 \begin{equation}
 \hat{\zeta}_m = \zeta_m e^{-i\hat{\theta}}
 \quad\quad \text{and} \quad\quad
@@ -238,8 +240,8 @@ We then realign the training dataset and all wind data used hereafter such that
 \end{equation}
 
 \subsection{Timescale Analysis}\label{sec:Methodology:Timescale}
-In order to determine the timescales over which an autoregressive model can be expected to perform well, we compute the autocorrelation of both $U_m$ and $V_m$, where $\zeta_m = U_m + i V_m$.
-From these autocorrelation sequences, we define a timescale, $T_X$ (where $X$ can be replaced by either $U$ or $V$), given by \citep{ONeill2004}
+In order to determine the timescales over which an autoregressive model can be expected to perform well, we compute the autocorrelations of both $U_m$ and $V_m$, where $\zeta_m = U_m + i V_m$.
+From these autocorrelation sequences, we define an integral timescale, $T_X$ (where $X$ can be replaced by either $U$ or $V$), given by \citep{ONeill2004}
 \begin{equation}\label{eq:Timescale}
 T_X = \sum_{m = 0}^{M-1} R_{XX}(m) \Delta t,
 \end{equation}
@@ -270,14 +272,14 @@ We perform this calculation for $Q$ randomly selected test segments, and compute
 \end{equation}
 where $\epsilon_n^{(q)}$ is the prediction error for the $q^\text{th}$ test segment.
 
-\subsubsection{Seasonal and Time-of-Day Dependence}\label{sec:Methodology:SeasonalAndDiurnalDependence}
+\subsubsection{Dependence on Season and on Time of Day}\label{sec:Methodology:SeasonalAndDiurnalDependence}
 To investigate the seasonal dependence of the prediction errors, we repeat a very similar analysis to that described above in \secref{sec:Methodology:Comparison}, but restrict the randomly selected test segments to be from a given season.
 In particular, we ensure that the entire test segment is contained within the same season.
 Here, we use ``Winter'' to refer to December through February;
 ``Spring'' refers to March through May;
 ``Summer'' refers to June through August; and
 ``Fall'' refers to September through November.
-Similarly, to investigate the dependence on the time of day, we restrict the randomly selected test segments such that the reference wind velocity segments are no longer than 12 hours and are either daytime (starting at 8AM) or nighttime (starting at 8PM) segments.
+Similarly, to investigate the dependence on the time of day, we restrict the randomly selected test segments such that the reference wind velocity segments are no longer than 12 hours and are either ``daytime'' (starting at 8AM) or ``nighttime'' (starting at 8PM) segments.
 
 %%%% RESULTS %%%%
 \section{Results and Discussion}\label{sec:Results}
@@ -286,16 +288,16 @@ In this section we present and discuss the results of the analyses described abo
 \subsection{Timescale Analysis}\label{sec:Results:Timescale}
 In \figref{fig:Autocorrelations}, we plot the autocorrelation sequences $R_{UU}(m)$ and $R_{VV}(m)$ (for the stream-wise and cross-stream wind components, respectively), which have been normalized such that $R_{UU}(0) = R_{VV}(0) = 1$.
 By averaging over the widest ``flat'' portion of each sequence, the ``steady-state'' values of these sequences are found to be approximately $\tilde{R}_{UU} = 0.1$ and $\tilde{R}_{VV} = 0$.
-From the plot, we see that $R_{UU}$ reaches its steady-state after approximately 70 days,
+From the plot, we see that $R_{UU}$ reaches its steady-state value after approximately 70 days,
 while $R_{VV}$ reaches its steady-state value after only approximately 15 days.
 Choosing $M_\text{max}$ as the first (i.e., smallest positive) value of $m$ at which $R_{XX}(m) < \tilde{R}_{XX}$, we compute, using \eqnref{eq:Timescale_mod}, the timescales $T_U$ and $T_V$.
-For each curve in \figref{fig:Autocorrelations}, the area between $\tilde{R}_{XX}$ and $R_{XX}(m)$ is shaded for $m < M_\text{max}$, corresponding to the value of the summation in \eqnref{eq:Timescale_mod}.
+For each curve in \figref{fig:Autocorrelations}, the area between $\tilde{R}_{XX}$ and $R_{XX}(m)$ is shaded for $m < M_\text{max}$, representing the value of the summation in \eqnref{eq:Timescale_mod}.
 
 \begin{figure}[htb]
 \centering
 \includegraphics[width=0.7\columnwidth]{figures/AutocorrelationSequences_100days}
 \caption{Normalized autocorrelation sequences $R_{UU}$ (blue curve) and $R_{VV}$ (red).
-The filled regions correspond to the summations computed in \eqnref{eq:Timescale_mod} to find the timescales $T_U$ and $T_V$.}
+The filled regions correspond to the summations computed in \eqnref{eq:Timescale_mod} to find the integral timescales $T_U$ and $T_V$.}
 \label{fig:Autocorrelations}
 \end{figure}
 
@@ -335,7 +337,7 @@ See \figref{fig:ComparisonRMSE:12hrs} for more details.}
 \label{fig:ComparisonRMSE:30days}
 \end{figure}
 
-Similarly, we see that the autoregressive model reaches a similar plateau in RMS error beyond $T_U$.
+Similarly, we see that the autoregressive model reaches a plateau in RMS error beyond $T_U$.
 However, these errors are still smaller than those of the persistence and random sample models.
 This suggests that, even though the system has ``forgotten'' about the previous wind conditions, the autoregressive model is still able to achieve predictions that are, on average, slightly more accurate than the totally independent predictions produced by the alternative models.
 As shown in \figref{fig:ComparisonRMSE:365days}, these plateaus remain constant even when forecasting up to 365 days into the future (i.e., $N_\text{out} = 365 \times 24 F_s$).
@@ -349,7 +351,7 @@ See \figref{fig:ComparisonRMSE:12hrs} for more details.}
 \label{fig:ComparisonRMSE:365days}
 \end{figure}
 
-\subsubsection{Seasonal and Time-of-Day Dependence}
+\subsubsection{Dependence on Season and on Time of Day}
 The RMS prediction errors incurred in each season by the autoregressive model are plotted in \figref{fig:SeasonalRMSE}.
 From this plot, we see that the errors are smallest in the Summer and largest in the Winter.
 This suggests that wind conditions in Spring and Summer tend to be ``more predictable'' than those in Fall or Winter.
@@ -360,7 +362,7 @@ Consequently, that there exists a significant seasonal dependence in the observe
 \begin{figure}[htb]
 \centering
 \includegraphics[width=0.7\columnwidth]{figures/SeasonalRMSPredictionError}
-\caption{Seasonal dependence of prediction errors incurred by the autoregressive model.
+\caption{Prediction errors incurred by the autoregressive model in each season.
 The vertical dashed lines indicate 2 and 5.5 days.
 Here, ``Winter'' (blue curve) refers to December through February;
 ``Spring'' (green) refers to March through May;
@@ -377,7 +379,7 @@ However, these results suggest that the autoregressive model may be better able 
 \begin{figure}[htb]
 \centering
 \includegraphics[width=0.7\columnwidth]{figures/DiurnalRMSPredictionError}
-\caption{Time-of-day dependence of prediction errors incurred by the autoregressive model.
+\caption{Prediction errors incurred by the autoregressive model under daytime and nighttime conditions.
 For daytime predictions (red curve), $t = 0$ corresponds to 8AM, while for nighttime predictions (blue), $t = 0$ corresponds to 8PM.}
 \label{fig:DiurnalRMSE}
 \end{figure}
@@ -396,7 +398,7 @@ Daytime predictions of wind velocity were also found to be slightly more accurat
 
 \subsection{Future Work}
 Future investigations should include an implementation of more sophisticated autoregressive models.
-For example, a regime-switching approach \citep[see][for example]{ZwiersVonStorch1990, Gneiting2006}, in which different autoregression coefficients are used for each season or for each time of day, can be expected to achieve improved performance under these various conditions.
+For example, seasonal \citep[Sec.~3.1.6]{Chatfield2000} or Markov-switching \citep{AilliotMonbet2012} autoregressive approaches, in which the autoregression coefficients vary with season, can be expected to achieve improved performance under each condition.
 Additionally, the performance of the autoregressive model should be compared to numerical weather prediction models, such the Weather Research and Forecasting model,\footnote{Available for download here: \url{https://www.mmm.ucar.edu/weather-research-and-forecasting-model}} which have been shown to outperform persistence beyond about 6 hours ahead \citep{Giebel2011,LandbergWatson1994}.
 
 \addcontentsline{toc}{section}{References}

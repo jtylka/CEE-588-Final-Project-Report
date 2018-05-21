@@ -135,8 +135,8 @@ An unbiased estimate of the cross-correlation of these sequences is given by\foo
 \begin{equation}\label{eq:xcorr}
 R_{XY}(m) =
 \begin{cases}
-\displaystyle \frac{1}{N - |m|} \sum_{n=0}^{N-m-1} X_{n+m} \overline{Y_n}, & \text{for } m \geq 0,\\[20pt]
-\overline{R_{XY}}(-m), & \text{for } m < 0,
+\displaystyle \frac{1}{N - m} \sum_{n=0}^{N-m-1} X_{n+m} \overline{Y_n}, & \text{for } m \geq 0,\\[20pt]
+\overline{R_{YX}}(-m), & \text{for } m < 0,
 \end{cases}
 \end{equation}
 for all integers $m \in [-(N-1),N-1]$, where $\overline{(\cdot)}$ denotes taking the complex conjugate of the argument.
@@ -147,8 +147,8 @@ Similarly, an unbiased estimate of the cross-covariance of $X_n$ and $Y_n$ is gi
 \begin{equation}\label{eq:xcov}
 C_{XY}(m) = 
 \begin{cases}
-\displaystyle \frac{1}{N - |m|} \sum_{n=0}^{N-m-1} \left( X_{n+m} - \langle X \rangle \right) \left( \overline{Y_n} - \left\langle \overline{Y} \right\rangle \right), & \text{for } m \geq 0,\\[20pt]
-\overline{C_{XY}}(-m), & \text{for } m < 0,
+\displaystyle \frac{1}{N - m} \sum_{n=0}^{N-m-1} \left( X_{n+m} - \langle X \rangle \right) \left( \overline{Y_n} - \left\langle \overline{Y} \right\rangle \right), & \text{for } m \geq 0,\\[20pt]
+\overline{C_{YX}}(-m), & \text{for } m < 0,
 \end{cases},
 \end{equation}
 where $\langle \cdot \rangle$ denotes taking the mean, i.e.,
